@@ -4,7 +4,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: sriramun/sticky-server:latest
+    image: sticky-server
     container_name: sticky-node-server-test
     command: /usr/src/app/node_modules/.bin/nodemon server.js
     volumes:
@@ -31,7 +31,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    image: sriramun/sticky-client:latest
+    image: sticky-client
     container_name: sticky-react-client-test
     command: npm start
     volumes:
