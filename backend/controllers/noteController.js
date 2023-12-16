@@ -77,9 +77,10 @@ const createNote = async (req, res) => {
   try {
     const user_id = req.user._id
     const note = await Note.create({title, notetext,priority,user_id})
+    console.info('New note created!')
     res.status(200).json(note)
   } catch (error) {
-    console.log("gONE")
+    console.error("Error encountered creating note")
     res.status(400).json({error: error.message})
   }
 }
@@ -100,6 +101,7 @@ const deleteNote = async (req, res) => {
     return res.status(400).json({error: 'No such note'})
   }
 
+  console.info('Deleting note!')
   res.status(200).json(note)
 }
 
@@ -119,6 +121,7 @@ const updateNote = async (req, res) => {
     return res.status(400).json({error: 'No such note'})
   }
 
+  console.info('Updating note!')
   res.status(200).json(note)
 }
 

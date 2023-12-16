@@ -1,0 +1,15 @@
+---
+- name: Deploy
+  hosts: localhost
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Pull docker images specified in docker compose
+      shell:
+        chdir: ../
+        cmd: docker-compose -f docker-compose.yml pull
+
+    - name: Run prod server
+      shell: 
+        chdir: ../
+        cmd: docker-compose -f docker-compose.yml -p sticky_notes_easy up -d --build
