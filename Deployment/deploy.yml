@@ -9,7 +9,7 @@
         chdir: ../
         cmd: docker-compose -f docker-compose.yml pull
 
-    - name: Run
+    - name: Run prod server
       shell: 
         chdir: ../
         cmd: docker-compose -f docker-compose.yml -p sticky_notes_easy up -d --build
