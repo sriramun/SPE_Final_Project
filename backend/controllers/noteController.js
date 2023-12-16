@@ -22,8 +22,11 @@ const level = () => {
 const logger = winston.createLogger({
   level: level(),
   format: format,
-  transports: [new winston.transports.Console()],
-});
+  transports: [
+    new winston.transports.File({
+      filename: 'sticky_devops.log',
+    }),
+  ],});
 
 const mongoose = require('mongoose')
 // get all notes
