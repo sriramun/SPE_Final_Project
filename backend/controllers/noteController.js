@@ -1,6 +1,31 @@
 const Note = require('../models/noteModel')
-const mongoose = require('mongoose')
 
+const winston = require('winston');
+
+const format = winston.format.combine(
+  // Add the message timestamp with the preferred format
+  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
+  // Tell Winston that the logs must be colored
+  winston.format.colorize({ all: true }),
+  // Define the format of the message showing the timestamp, the level and the message
+  winston.format.printf(
+    (info) => `${info.timestamp} ${info.level}: ${info.message}`,
+  ),
+)
+
+const level = () => {
+  const env = process.env.NODE_ENV || 'development'
+  const isDevelopment = env === 'development'
+  return isDevelopment ? 'debug' : 'warn'
+}
+
+const logger = winston.createLogger({
+  level: level(),
+  format: format,
+  transports: [new winston.transports.Console()],
+});
+
+const mongoose = require('mongoose')
 // get all notes
 const getNotes = async (req, res) => {
   const user_id = req.user._id
@@ -30,6 +55,7 @@ const getNote = async (req, res) => {
 
 // create new note
 const createNote = async (req, res) => {
+  logger.info('Successfully Note created!');
   const {title,notetext,priority} = req.body
   console.log(title)
   let emptyFields = []
@@ -61,6 +87,8 @@ const createNote = async (req, res) => {
 
 // delete a note
 const deleteNote = async (req, res) => {
+  logger.info('Successfully Note Deleted!');
+
   const { id } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
