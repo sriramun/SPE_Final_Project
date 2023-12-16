@@ -1,1 +1,1 @@
-# SPE_Final_Project - Sticky Notes
+# SPE_Final_Project
