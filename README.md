@@ -1,7 +1,7 @@
 # SPE_Final_Project - Sticky Notes
 
 Team Members:
-Dhanvi Medha Beechu
+Dhanvi Medha Beechu &
 Sriram Munagala 
 
 Description:
