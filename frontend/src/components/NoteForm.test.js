@@ -1,52 +1,59 @@
-import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import { rest } from 'msw';
-import { setupServer } from 'msw/node';
-import NoteForm from './NoteForm';
-import { NotesContextProvider } from '../hooks/useNotesContext';
-import { AuthContextProvider } from '../hooks/useAuthContext';
+import { render, screen, fireEvent } from '@testing-library/react';
+import AddInput from "../AddInput"
 
-const server = setupServer(
-  rest.post('/api/notes', (req, res, ctx) => {
-    return res(ctx.json({ id: 1, title: 'Test Note', notetext: 'This is a test note', priority: 1 }));
-  })
-);
+const mockedSetTodo = jest.fn();
 
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
-
-test('renders NoteForm component', () => {
-  render(
-    <AuthContextProvider>
-      <NotesContextProvider>
-        <NoteForm />
-      </NotesContextProvider>
-    </AuthContextProvider>
-  );
-
-  expect(screen.getByText('Add a New Note')).toBeInTheDocument();
-});
-
-test('submits the form and creates a new note', async () => {
-  render(
-    <AuthContextProvider>
-      <NotesContextProvider>
-        <NoteForm />
-      </NotesContextProvider>
-    </AuthContextProvider>
-  );
-
-  // Fill in the form fields
-  fireEvent.change(screen.getByLabelText(/Note Title/i), { target: { value: 'Test Note' } });
-  fireEvent.change(screen.getByLabelText(/Note:/i), { target: { value: 'This is a test note' } });
-  fireEvent.change(screen.getByLabelText(/Priority\(0-2\):/i), { target: { value: '1' } });
-
-  // Submit the form
-  await act(async () => {
-    fireEvent.click(screen.getByText('Add Note'));
-  });
-
-  // Check if the note is created
-  expect(await screen.findByText('Test Note')).toBeInTheDocument();
-});
+describe("AddInput", () => {
+    it('should render input element', () => {
+        render(
+            <AddInput 
+                todos={[]}
+                setTodos={mockedSetTodo}
+            />
+        );
+        const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
+        expect(inputElement).toBeInTheDocument();
+    });
+    
+    it('should be able to type into input', () => {
+        render(
+            <AddInput 
+                todos={[]}
+                setTodos={mockedSetTodo}
+            />
+        );
+        const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
+        fireEvent.click(inputElement)
+        fireEvent.change(inputElement, { target: { value: "Go Grocery Shopping" } })
+        expect(inputElement.value).toBe("Go Grocery Shopping");
+    });
+    
+    it('should be able to type into input', () => {
+        render(
+            <AddInput 
+                todos={[]}
+                setTodos={mockedSetTodo}
+            />
+        );
+        const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
+        fireEvent.click(inputElement)
+        fireEvent.change(inputElement, { target: { value: "Go Grocery Shopping" } });
+        const buttonElement = screen.getByRole("button", { name: /Add/i});
+        fireEvent.click(buttonElement)
+        expect(mockedSetTodo).toBeCalled()
+    });
+    
+    it('should have empty input when add button is cliked', () => {
+        render(
+            <AddInput 
+                todos={[]}
+                setTodos={mockedSetTodo}
+            />
+        );
+        const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
+        fireEvent.change(inputElement, { target: { value: "Go Grocery Shopping" } });
+        const buttonElement = screen.getByRole("button", { name: /Add/i});
+        fireEvent.click(buttonElement)
+        expect(inputElement.value).toBe("")
+    });
+})
