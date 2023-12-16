@@ -1,0 +1,18 @@
+---
+- name: Pull Docker Image of Calculator
+  hosts: localhost
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+  - name: Copy Docker Compose file from host machine to remote host
+    copy:
+      src: ../docker-composeTEST.yml
+      dest: ./
+
+  - name: Pull docker images specified in docker compose
+      shell:
+        cmd: docker-compose -f docker-composeTEST.yml pull
+        chdir: ./
+
+  - name: Running Tests
+    shell: docker-compose -f docker-composeTEST.yml -p sticky_notes_easy_test run server npm run test

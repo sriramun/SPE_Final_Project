@@ -5,7 +5,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     image: sriramun/sticky-server:latest
-    container_name: sticky-node-server
+    container_name: sticky-node-server-test
     command: /usr/src/app/node_modules/.bin/nodemon server.js
     volumes:
       - ./backend/:/usr/src/app
@@ -22,7 +22,7 @@ services:
   mongo:
     image: mongo
     volumes:
-      - data-volume:/data/db
+      - data-volume-test:/data/db
     ports:
       - "27017:27017"
     networks:
@@ -32,7 +32,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     image: sriramun/sticky-client:latest
-    container_name: sticky-react-client
+    container_name: sticky-react-client-test
     command: npm start
     volumes:
       - ./frontend/:/usr/app
@@ -49,7 +49,7 @@ networks:
         driver: bridge
 
 volumes:
-    data-volume:
+    data-volume-test:
     node_modules:
     web-root:
       driver: local
