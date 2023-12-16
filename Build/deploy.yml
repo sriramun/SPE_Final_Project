@@ -12,7 +12,7 @@
     - name: Running Tests
       shell: 
         chdir: ../
-        cmd: docker-compose -f docker-composeTEST.yml -p sticky_notes_easy_test run server npm run test
+        cmd: docker-compose -f docker-composeTEST.yml -p sticky_notes_easy_test --build run server npm run test
 
     - name: Shutdown testing server
       shell:
