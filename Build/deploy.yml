@@ -15,4 +15,6 @@
         cmd: docker-compose -f docker-composeTEST.yml pull
 
     - name: Running Tests
-      shell: docker-compose -f docker-composeTEST.yml -p sticky_notes_easy_test run server npm run test
+      shell: 
+        chdir: ../
+        cmd: docker-compose -f docker-composeTEST.yml -p sticky_notes_easy_test run server npm run test
